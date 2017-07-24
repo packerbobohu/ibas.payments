@@ -1,0 +1,10 @@
+{
+  "payments": "付款",
+  "payments_icon": "sap-icon://money-bills",
+  "payments_func_payment": "付款",
+  "payments_app_payment_list": "付款列表",
+  "payments_app_payment_choose": "付款选择",
+  "payments_app_payment_view": "付款查看",
+  "payments_app_payment_edit": "付款编辑",
+  "payments_closing_delimiter": "----结束----"
+}

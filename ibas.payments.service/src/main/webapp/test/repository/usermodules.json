@@ -1,0 +1,9 @@
+[
+  {
+    "Id": "0f0ddc35-04df-45be-8bea-26b354882743",
+    "Name": "Payments",
+    "Category": "",
+    "Address": ".../",
+    "Repository": "http://localhost:8080/payments/services/rest/data"
+  }
+]
