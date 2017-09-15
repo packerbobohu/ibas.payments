@@ -15,14 +15,13 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.payments.MyConfiguration;
-import org.colorcoding.ibas.payments.MyConsts;
 
 /**
  * 获取-付款-项目
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PaymentItem.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
+@XmlType(name = PaymentItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem {
 
 	/**

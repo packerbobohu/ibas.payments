@@ -4,12 +4,12 @@ import java.beans.PropertyChangeEvent;
 import javax.xml.bind.annotation.*;
 import org.colorcoding.ibas.bobas.common.*;
 import org.colorcoding.ibas.bobas.bo.*;
-import org.colorcoding.ibas.payments.MyConsts;
+import org.colorcoding.ibas.payments.MyConfiguration;
 
 /**
 * 付款-项目 集合
 */
-@XmlType(name = PaymentItems.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
+@XmlType(name = PaymentItems.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlSeeAlso({ PaymentItem.class })
 public class PaymentItems extends BusinessObjects<IPaymentItem, IPayment> implements IPaymentItems {
 
