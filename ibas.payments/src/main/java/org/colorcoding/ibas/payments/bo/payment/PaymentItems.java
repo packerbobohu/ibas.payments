@@ -62,6 +62,8 @@ public class PaymentItems extends BusinessObjects<IPaymentItem, IPayment> implem
     protected void afterAddItem(IPaymentItem item) {
         super.afterAddItem(item);
         // TODO 设置关联值
+        ((PaymentItem)item).setBusinessPartnerCode(this.getParent().getBusinessPartnerCode());
+        ((PaymentItem)item).setBusinessPartnerName(this.getParent().getBusinessPartnerName());
     }
 
     @Override

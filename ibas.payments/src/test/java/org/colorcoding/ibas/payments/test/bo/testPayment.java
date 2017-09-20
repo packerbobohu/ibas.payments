@@ -31,7 +31,10 @@ public class testPayment extends TestCase {
         // 测试付款-项目
         IPaymentItem paymentitem = bo.getPaymentItems().create();
         // 测试属性赋值
-        
+
+        paymentitem.setBusinessPartnerCode("C0002");
+        paymentitem.setBusinessPartnerCode("奥维思博");
+        paymentitem.setAmount(100);
 
 
         // 测试对象的保存和查询

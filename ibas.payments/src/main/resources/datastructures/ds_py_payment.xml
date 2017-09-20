@@ -73,6 +73,8 @@
     <Property Name="Rate" Description="汇率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="Rate"/>
     <Property Name="BankCode" Description="银行编码" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="BankCode"/>
     <Property Name="CardNumber" Description="卡号" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="CardNumber"/>
+    <Property Name="BusinessPartnerCode" Description="业务伙伴代码" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="CardCode"/>
+    <Property Name="BusinessPartnerName" Description="业务伙伴名称" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="CardName"/>
   </Model>
   <BusinessObject MappedModel="Payment" ShortName="${Company}_PY_PAYMENT">
     <RelatedBO Relation="OneToMany" MappedModel="PaymentItem"/>

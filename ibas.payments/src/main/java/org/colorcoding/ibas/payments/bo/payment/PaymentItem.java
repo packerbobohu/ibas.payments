@@ -14,6 +14,7 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.businesspartner.logics.IBusinessPartnerBalancePaymentContract;
 import org.colorcoding.ibas.payments.MyConfiguration;
 import org.colorcoding.ibas.payments.MyConsts;
 
@@ -23,7 +24,7 @@ import org.colorcoding.ibas.payments.MyConsts;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PaymentItem.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
-public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem {
+public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem,IBusinessPartnerBalancePaymentContract {
 
 	/**
 	 * 序列化版本标记
@@ -576,7 +577,7 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 
 	/**
 	 * 获取-更新动作标识
-	 * 
+	 *
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_UPDATEACTIONID_NAME)
@@ -586,7 +587,7 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 
 	/**
 	 * 设置-更新动作标识
-	 * 
+	 *
 	 * @param value
 	 *            值
 	 */
@@ -1166,6 +1167,70 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 		this.setProperty(PROPERTY_CARDNUMBER, value);
 	}
 
+    /**
+     * 属性名称-业务伙伴代码
+     */
+    private static final String PROPERTY_BUSINESSPARTNERCODE_NAME = "BusinessPartnerCode";
+
+    /**
+     * 业务伙伴代码 属性
+     */
+    @DbField(name = "CardCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+    public static final IPropertyInfo<String> PROPERTY_BUSINESSPARTNERCODE = registerProperty(
+            PROPERTY_BUSINESSPARTNERCODE_NAME, String.class, MY_CLASS);
+
+    /**
+     * 获取-业务伙伴代码
+     *
+     * @return 值
+     */
+    @XmlElement(name = PROPERTY_BUSINESSPARTNERCODE_NAME)
+    public final String getBusinessPartnerCode() {
+        return this.getProperty(PROPERTY_BUSINESSPARTNERCODE);
+    }
+
+    /**
+     * 设置-业务伙伴代码
+     *
+     * @param value
+     *            值
+     */
+    public final void setBusinessPartnerCode(String value) {
+        this.setProperty(PROPERTY_BUSINESSPARTNERCODE, value);
+    }
+
+    /**
+     * 属性名称-业务伙伴名称
+     */
+    private static final String PROPERTY_BUSINESSPARTNERNAME_NAME = "BusinessPartnerName";
+
+    /**
+     * 业务伙伴名称 属性
+     */
+    @DbField(name = "CardName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+    public static final IPropertyInfo<String> PROPERTY_BUSINESSPARTNERNAME = registerProperty(
+            PROPERTY_BUSINESSPARTNERNAME_NAME, String.class, MY_CLASS);
+
+    /**
+     * 获取-业务伙伴名称
+     *
+     * @return 值
+     */
+    @XmlElement(name = PROPERTY_BUSINESSPARTNERNAME_NAME)
+    public final String getBusinessPartnerName() {
+        return this.getProperty(PROPERTY_BUSINESSPARTNERNAME);
+    }
+
+    /**
+     * 设置-业务伙伴名称
+     *
+     * @param value
+     *            值
+     */
+    public final void setBusinessPartnerName(String value) {
+        this.setProperty(PROPERTY_BUSINESSPARTNERNAME, value);
+    }
+
 	/**
 	 * 初始化数据
 	 */
@@ -1176,4 +1241,53 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 
 	}
 
+	@Override
+	public String getPaymentBusinessPartnerCode() {
+        return this.getProperty(PROPERTY_BUSINESSPARTNERCODE);
+	}
+
+	@Override
+	public String getPaymentBusinessPartnerName() {
+        return this.getProperty(PROPERTY_BUSINESSPARTNERNAME);
+    }
+
+	@Override
+	public Decimal getPaymentAmount() {
+		return this.getProperty(PROPERTY_AMOUNT);
+	}
+
+	@Override
+	public Decimal getPaymentRate() {
+		return this.getProperty(PROPERTY_RATE);
+	}
+
+	@Override
+	public String getPaymentCurrency() {
+		return this.getProperty(PROPERTY_CURRENCY);
+	}
+
+	@Override
+	public String getPaymentBankCode() {
+		return this.getProperty(PROPERTY_BANKCODE);
+	}
+
+	@Override
+	public String getPaymentCardNumber() {
+		return this.getProperty(PROPERTY_CARDNUMBER);
+	}
+
+	@Override
+	public String getPaymentBaseDocumentType() {
+		return this.getProperty(PROPERTY_BASEDOCUMENTTYPE);
+	}
+
+	@Override
+	public Integer getPaymentBaseDocumentEntry() {
+		return this.getProperty(PROPERTY_BASEDOCUMENTENTRY);
+	}
+
+	@Override
+	public Integer getPaymentBaseDocumentLineId() {
+		return this.getProperty(PROPERTY_BASEDOCUMENTLINEID);
+	}
 }
