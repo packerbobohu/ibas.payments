@@ -22,14 +22,8 @@ import org.colorcoding.ibas.payments.MyConfiguration;
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-<<<<<<< HEAD
-@XmlType(name = PaymentItem.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
-public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem,IBusinessPartnerBalancePaymentContract {
-=======
 @XmlType(name = PaymentItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem {
->>>>>>> upstream/master
-
+public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem,IBusinessPartnerBalancePaymentContract {
 	/**
 	 * 序列化版本标记
 	 */
