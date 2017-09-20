@@ -20,15 +20,14 @@ import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.payments.MyConfiguration;
-import org.colorcoding.ibas.payments.MyConsts;
 
 /**
  * 获取-付款
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Payment.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
-@XmlRootElement(name = Payment.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
+@XmlType(name = Payment.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlRootElement(name = Payment.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(Payment.BUSINESS_OBJECT_CODE)
 public class Payment extends BusinessObject<Payment> implements IPayment {
 
