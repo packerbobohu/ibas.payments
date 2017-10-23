@@ -2,6 +2,7 @@ package org.colorcoding.ibas.payments.bo.payment;
 
 import org.colorcoding.ibas.bobas.bo.*;
 import org.colorcoding.ibas.bobas.data.*;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.payments.data.*;
 
 /**
@@ -12,7 +13,7 @@ public interface IPaymentItem extends IBODocumentLine {
 
     /**
     * 获取-编码
-    * 
+    *
     * @return 值
     */
     Integer getDocEntry();
@@ -545,6 +546,21 @@ public interface IPaymentItem extends IBODocumentLine {
     * @param value 值
     */
     void setCardNumber(String value);
+
+    /**
+     * 获取-业务伙伴类型
+     *
+     * @return 值
+     */
+    emBusinessPartnerType getBusinessPartnerType();
+
+    /**
+     * 设置-业务伙伴类型
+     *
+     * @param value
+     *            值
+     */
+    void setBusinessPartnerType(emBusinessPartnerType value);
 
     /**
      * 获取-业务伙伴代码

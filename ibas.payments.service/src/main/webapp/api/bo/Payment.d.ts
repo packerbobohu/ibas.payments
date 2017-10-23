@@ -161,6 +161,15 @@ export interface IPaymentItem extends IBODocumentLine {
     /** 行号 */
     lineId: number;
 
+    /** 业务伙伴代码 */
+    businessPartnerCode: string;
+
+    /** 业务伙伴名称 */
+    businessPartnerName: string;
+
+    /** 业务伙伴类型 */
+    businessPartnerType: emBusinessPartnerType;
+
     /** 显示顺序 */
     visOrder: number;
 

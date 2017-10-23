@@ -23,15 +23,84 @@ export class PaymentEditView extends ibas.BOEditView implements IPaymentEditView
     addPaymentItemEvent: Function;
     /** 删除付款-项目事件 */
     removePaymentItemEvent: Function;
+    /** 选择付款客户事件 */
+    choosePaymentPartnerEvent: Function;
+    private mainLayout: sap.ui.layout.VerticalLayout;
+    private viewTopForm: sap.ui.layout.form.SimpleForm;
+    private viewBottomForm: sap.ui.layout.form.SimpleForm;
 
     /** 绘制视图 */
     darw(): any {
         let that: this = this;
-        this.form = new sap.ui.layout.form.SimpleForm("", {
+        this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
+            editable: true,
+            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+            singleContainerFullSize: false,
+            adjustLabelSpan: false,
+            labelSpanL: 2,
+            labelSpanM: 2,
+            labelSpanS: 12,
+            columnsXL: 2,
+            columnsL: 2,
+            columnsM: 1,
+            columnsS: 1,
             content: [
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_businesspartnercode") }),
+                new sap.m.Input("", {
+                    placeholder: ibas.i18n.prop("bo_payment_businesspartnercode"),
+                    tooltip: ibas.i18n.prop("bo_payment_businesspartnercode"),
+                    showValueHelp: true,
+                    valueHelpRequest: function (): void {
+                        that.fireViewEvents(that.choosePaymentPartnerEvent);
+                    }
+                }).bindProperty("value", {
+                    path: "businessPartnerCode",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_businesspartnername") }),
+                new sap.m.Text("", {
+                    type: sap.m.InputType.Text,
+                }).bindProperty("text", {
+                    path: "businessPartnerName",
+                }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_documentstatus") }),
+                new sap.m.Select("", {
+                    showSecondaryValues: true,
+                    items: utils.createComboBoxItems(ibas.emDocumentStatus),
+                }).bindProperty("selectedKey", {
+                    path: "documentStatus",
+                    type: "sap.ui.model.type.Integer",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_canceled") }),
+                new sap.m.Select("", {
+                    showSecondaryValues: true,
+                    items: utils.createComboBoxItems(ibas.emYesNo),
+                }).bindProperty("selectedKey", {
+                    path: "canceled",
+                    type: "sap.ui.model.type.Integer",
+                }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_documentdate") }),
+                new sap.m.DatePicker("", {
+                    valueFormat: "yyyy-MM-dd",
+                }).bindProperty("dateValue", {
+                    path: "documentDate",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_postingdate") }),
+                new sap.m.DatePicker("", {
+                    valueFormat: "yyyy-MM-dd",
+                }).bindProperty("dateValue", {
+                    path: "postingDate",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_deliverydate") }),
+                new sap.m.DatePicker("", {
+                    valueFormat: "yyyy-MM-dd",
+                }).bindProperty("dateValue", {
+                    path: "deliveryDate",
+                })
             ]
         });
-        this.form.addContent(new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_paymentitem") }));
         this.tablePaymentItem = new sap.ui.table.Table("", {
             extension: new sap.m.Toolbar("", {
                 content: [
@@ -60,9 +129,97 @@ export class PaymentEditView extends ibas.BOEditView implements IPaymentEditView
             visibleRowCount: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             columns: [
+                // new sap.ui.table.Column("", {
+                //     label: ibas.i18n.prop("bo_paymentitem_businesspartnercode"),
+                //     template: new sap.m.Input("", {
+                //         width: "100%",
+                //         type: sap.m.InputType.Text
+                //     }).bindProperty("value", {
+                //         path: "businessPartnerCode"
+                //     })
+                // }),
+                // new sap.ui.table.Column("", {
+                //     label: ibas.i18n.prop("bo_paymentitem_businesspartnername"),
+                //     template: new sap.m.Input("", {
+                //         width: "100%",
+                //         type: sap.m.InputType.Text
+                //     }).bindProperty("value", {
+                //         path: "businessPartnerName"
+                //     })
+                // }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_paymentitem_linestatus"),
+                    template: new sap.m.Select("", {
+                        width: "100%",
+                        items: utils.createComboBoxItems(ibas.emDocumentStatus),
+                    }).bindProperty("selectedKey", {
+                        path: "lineStatus",
+                        type: "sap.ui.model.type.Integer",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_paymentitem_mode"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        editable: false,
+                    }).bindProperty("value", {
+                        path: "mode"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_paymentitem_amount"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        type: sap.m.InputType.Number
+                    }).bindProperty("value", {
+                        path: "amount"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_paymentitem_currency"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        type: sap.m.InputType.Text
+                    }).bindProperty("value", {
+                        path: "currency"
+                    })
+                }),
             ]
         });
-        this.form.addContent(this.tablePaymentItem);
+        this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
+            editable: true,
+            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+            labelSpanL: 2,
+            labelSpanM: 2,
+            labelSpanS: 12,
+            columnsXL: 2,
+            columnsL: 2,
+            columnsM: 1,
+            columnsS: 1,
+            content: [
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_payment_remarks") }),
+                new sap.m.TextArea("", {
+                    rows: 5,
+                }).bindProperty("value", {
+                    path: "/remarks",
+                }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_amount") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_payment_documenttotal") }),
+                new sap.m.Input("", {
+                    width: "100px",
+                    type: sap.m.InputType.Number,
+                }).bindProperty("value", {
+                    path: "/DocumentTotal",
+                }),
+            ],
+        });
+        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+            content: [
+                this.viewTopForm,
+                this.tablePaymentItem,
+                this.viewBottomForm,
+            ],
+        });
         this.page = new sap.m.Page("", {
             showHeader: false,
             subHeader: new sap.m.Toolbar("", {
@@ -120,7 +277,7 @@ export class PaymentEditView extends ibas.BOEditView implements IPaymentEditView
                     }),
                 ]
             }),
-            content: [this.form]
+            content: [this.mainLayout]
         });
         this.id = this.page.getId();
         return this.page;
@@ -144,22 +301,23 @@ export class PaymentEditView extends ibas.BOEditView implements IPaymentEditView
                 utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
                 utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            utils.changeFormEditable(this.form, false);
+            utils.changeFormEditable(this.mainLayout, false);
         }
     }
     private tablePaymentItem: sap.ui.table.Table;
 
     /** 显示数据 */
     showPayment(data: bo.Payment): void {
-        this.form.setModel(new sap.ui.model.json.JSONModel(data));
+        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
+        this.mainLayout.bindObject("/");
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.form, data);
+        utils.refreshModelChanged(this.mainLayout, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }
     /** 显示数据 */
     showPaymentItems(datas: bo.PaymentItem[]): void {
-        this.tablePaymentItem.setModel(new sap.ui.model.json.JSONModel({rows: datas}));
+        this.tablePaymentItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
         utils.refreshModelChanged(this.tablePaymentItem, datas);
     }

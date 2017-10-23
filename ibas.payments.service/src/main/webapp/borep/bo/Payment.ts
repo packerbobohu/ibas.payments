@@ -465,6 +465,26 @@ export class PaymentItems extends BusinessObjects<PaymentItem, Payment> implemen
         this.add(item);
         return item;
     }
+
+    /** 添加子项后 子项属性赋值 */
+    protected afterAdd(item: PaymentItem): void {
+        super.afterAdd(item);
+        item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERCODE_NAME, this.parent.businessPartnerCode);
+        item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERNAME_NAME, this.parent.businessPartnerName);
+        item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERTYPE_NAME, this.parent.businessPartnerType);
+    }
+
+    /** 主表属性发生变化后 子项属性赋值  */
+    protected onParentPropertyChanged(name: string): void {
+        super.onParentPropertyChanged(name);
+        if (name === Payment.PROPERTY_BUSINESSPARTNERCODE_NAME) {
+            for (let item of this) {
+                item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERCODE_NAME, this.parent.businessPartnerCode);
+                item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERNAME_NAME, this.parent.businessPartnerName);
+                item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERTYPE_NAME, this.parent.businessPartnerType);
+            }
+        }
+    }
 }
 
 /** 付款-项目 */
@@ -494,6 +514,38 @@ export class PaymentItem extends BODocumentLine<PaymentItem> implements IPayment
     /** 设置-行号 */
     set lineId(value: number) {
         this.setProperty(PaymentItem.PROPERTY_LINEID_NAME, value);
+    }
+    /** 映射的属性名称-业务伙伴代码 */
+    static PROPERTY_BUSINESSPARTNERCODE_NAME: string = "BusinessPartnerCode";
+    /** 获取-业务伙伴代码 */
+    get businessPartnerCode(): string {
+        return this.getProperty<string>(Payment.PROPERTY_BUSINESSPARTNERCODE_NAME);
+    }
+    /** 设置-业务伙伴代码 */
+    set businessPartnerCode(value: string) {
+        this.setProperty(Payment.PROPERTY_BUSINESSPARTNERCODE_NAME, value);
+    }
+
+    /** 映射的属性名称-业务伙伴名称 */
+    static PROPERTY_BUSINESSPARTNERNAME_NAME: string = "BusinessPartnerName";
+    /** 获取-业务伙伴名称 */
+    get businessPartnerName(): string {
+        return this.getProperty<string>(Payment.PROPERTY_BUSINESSPARTNERNAME_NAME);
+    }
+    /** 设置-业务伙伴名称 */
+    set businessPartnerName(value: string) {
+        this.setProperty(Payment.PROPERTY_BUSINESSPARTNERNAME_NAME, value);
+    }
+
+    /** 映射的属性名称-业务伙伴类型 */
+    static PROPERTY_BUSINESSPARTNERTYPE_NAME: string = "BusinessPartnerType";
+    /** 获取-业务伙伴类型 */
+    get businessPartnerType(): emBusinessPartnerType {
+        return this.getProperty<emBusinessPartnerType>(Payment.PROPERTY_BUSINESSPARTNERTYPE_NAME);
+    }
+    /** 设置-业务伙伴类型 */
+    set businessPartnerType(value: emBusinessPartnerType) {
+        this.setProperty(Payment.PROPERTY_BUSINESSPARTNERTYPE_NAME, value);
     }
 
     /** 映射的属性名称-显示顺序 */
