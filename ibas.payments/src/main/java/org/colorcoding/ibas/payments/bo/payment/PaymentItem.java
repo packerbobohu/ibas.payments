@@ -12,8 +12,12 @@ import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.logics.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logics.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
+import org.colorcoding.ibas.businesspartner.logics.IPaymentBusinessPartnerBalanceJournalContract;
 import org.colorcoding.ibas.payments.MyConfiguration;
 
 /**
@@ -22,8 +26,7 @@ import org.colorcoding.ibas.payments.MyConfiguration;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PaymentItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem {
-
+public class PaymentItem extends BusinessObject<PaymentItem> implements IPaymentItem,IBusinessLogicsHost {
 	/**
 	 * 序列化版本标记
 	 */
@@ -575,7 +578,7 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 
 	/**
 	 * 获取-更新动作标识
-	 * 
+	 *
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_UPDATEACTIONID_NAME)
@@ -585,7 +588,7 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 
 	/**
 	 * 设置-更新动作标识
-	 * 
+	 *
 	 * @param value
 	 *            值
 	 */
@@ -1166,13 +1169,179 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 	}
 
 	/**
+	 * 属性名称-业务伙伴类型
+	 */
+	private static final String PROPERTY_BUSINESSPARTNERTYPE_NAME = "BusinessPartnerType";
+
+	/**
+	 * 业务伙伴类型 属性
+	 */
+	@DbField(name = "CardType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<emBusinessPartnerType> PROPERTY_BUSINESSPARTNERTYPE = registerProperty(
+			PROPERTY_BUSINESSPARTNERTYPE_NAME, emBusinessPartnerType.class, MY_CLASS);
+
+	/**
+	 * 获取-业务伙伴类型
+	 *
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_BUSINESSPARTNERTYPE_NAME)
+	public final emBusinessPartnerType getBusinessPartnerType() {
+		return this.getProperty(PROPERTY_BUSINESSPARTNERTYPE);
+	}
+
+	/**
+	 * 设置-业务伙伴类型
+	 *
+	 * @param value
+	 *            值
+	 */
+	public final void setBusinessPartnerType(emBusinessPartnerType value) {
+		this.setProperty(PROPERTY_BUSINESSPARTNERTYPE, value);
+	}
+
+	/**
+     * 属性名称-业务伙伴代码
+     */
+    private static final String PROPERTY_BUSINESSPARTNERCODE_NAME = "BusinessPartnerCode";
+
+    /**
+     * 业务伙伴代码 属性
+     */
+    @DbField(name = "CardCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+    public static final IPropertyInfo<String> PROPERTY_BUSINESSPARTNERCODE = registerProperty(
+            PROPERTY_BUSINESSPARTNERCODE_NAME, String.class, MY_CLASS);
+
+    /**
+     * 获取-业务伙伴代码
+     *
+     * @return 值
+     */
+    @XmlElement(name = PROPERTY_BUSINESSPARTNERCODE_NAME)
+    public final String getBusinessPartnerCode() {
+        return this.getProperty(PROPERTY_BUSINESSPARTNERCODE);
+    }
+
+    /**
+     * 设置-业务伙伴代码
+     *
+     * @param value
+     *            值
+     */
+    public final void setBusinessPartnerCode(String value) {
+        this.setProperty(PROPERTY_BUSINESSPARTNERCODE, value);
+    }
+
+    /**
+     * 属性名称-业务伙伴名称
+     */
+    private static final String PROPERTY_BUSINESSPARTNERNAME_NAME = "BusinessPartnerName";
+
+    /**
+     * 业务伙伴名称 属性
+     */
+    @DbField(name = "CardName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+    public static final IPropertyInfo<String> PROPERTY_BUSINESSPARTNERNAME = registerProperty(
+            PROPERTY_BUSINESSPARTNERNAME_NAME, String.class, MY_CLASS);
+
+    /**
+     * 获取-业务伙伴名称
+     *
+     * @return 值
+     */
+    @XmlElement(name = PROPERTY_BUSINESSPARTNERNAME_NAME)
+    public final String getBusinessPartnerName() {
+        return this.getProperty(PROPERTY_BUSINESSPARTNERNAME);
+    }
+
+    /**
+     * 设置-业务伙伴名称
+     *
+     * @param value
+     *            值
+     */
+    public final void setBusinessPartnerName(String value) {
+        this.setProperty(PROPERTY_BUSINESSPARTNERNAME, value);
+    }
+
+	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
-
+		this.setBusinessPartnerType(emBusinessPartnerType.CUSTOMER);
 	}
 
+
+	//region 服务接口实现
+	@Override
+	public IBusinessLogicContract[] getContracts() {
+		return new IBusinessLogicContract[]{
+				//注册业务伙伴余额受付款影响的契约
+				new IPaymentBusinessPartnerBalanceJournalContract(){
+					@Override
+					public String getIdentifiers() {
+						    return PaymentItem.this.getIdentifiers();
+					}
+
+
+					public emBusinessPartnerType getBusinessPartnerType() {
+						    return PaymentItem.this.getBusinessPartnerType();
+					}
+
+					@Override
+					public String getBusinessPartnerCode(){
+							return PaymentItem.this.getBusinessPartnerCode();
+					}
+
+					@Override
+					public String getBusinessPartnerName() {
+							return PaymentItem.this.getBusinessPartnerName();
+					}
+
+					@Override
+					public Decimal getAmount() {
+							return PaymentItem.this.getAmount();
+					}
+
+					@Override
+					public Decimal getRate() {
+							return PaymentItem.this.getRate();
+					}
+
+					@Override
+					public String getCurrency() {
+							return PaymentItem.this.getCurrency();
+					}
+
+					@Override
+					public String getBankCode() {
+							return PaymentItem.this.getBankCode();
+					}
+
+					@Override
+					public String getCardNumber() {
+							return PaymentItem.this.getCardNumber();
+					}
+
+					@Override
+					public String getBaseDocumentType() {
+							return PaymentItem.this.getObjectCode();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+							return PaymentItem.this.getDocEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+							return PaymentItem.this.getLineId();
+					}
+				}
+		};
+	}
+	//endregion
 }

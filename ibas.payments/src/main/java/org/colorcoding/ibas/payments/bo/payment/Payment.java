@@ -1313,7 +1313,7 @@ public class Payment extends BusinessObject<Payment> implements IPayment {
 		this.setDocumentDate(DateTime.getToday());
 		this.setDeliveryDate(DateTime.getToday());
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
-
+		this.setBusinessPartnerType(emBusinessPartnerType.CUSTOMER);
 	}
 
 }

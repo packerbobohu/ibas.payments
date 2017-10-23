@@ -9,6 +9,8 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryPayments } from "../../borep/BORepositories";
+import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
+import { emBusinessPartnerType } from "3rdparty/businesspartner/Datas";
 
 /** 编辑应用-付款 */
 export class PaymentEditApp extends ibas.BOEditApplication<IPaymentEditView, bo.Payment> {
@@ -35,6 +37,7 @@ export class PaymentEditApp extends ibas.BOEditApplication<IPaymentEditView, bo.
         this.view.createDataEvent = this.createData;
         this.view.addPaymentItemEvent = this.addPaymentItem;
         this.view.removePaymentItemEvent = this.removePaymentItem;
+        this.view.choosePaymentPartnerEvent = this.choosePaymentPartner;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -199,6 +202,23 @@ export class PaymentEditApp extends ibas.BOEditApplication<IPaymentEditView, bo.
         this.view.showPaymentItems(this.editData.paymentItems.filterDeleted());
     }
 
+    /** 选择付款客户事件 */
+    private choosePaymentPartner(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<ICustomer>({
+            boCode: BO_CODE_CUSTOMER,
+            criteria: [
+                new ibas.Condition(BO_CODE_CUSTOMER,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.businessPartnerCode)),
+            ],
+            onCompleted(selecteds: ibas.List<ICustomer>): void {
+                that.editData.businessPartnerCode = selecteds.firstOrDefault().code;
+                that.editData.businessPartnerName = selecteds.firstOrDefault().name;
+                that.editData.businessPartnerType = emBusinessPartnerType.CUSTOMER;
+            }
+        });
+    }
+
 }
 /** 视图-付款 */
 export interface IPaymentEditView extends ibas.IBOEditView {
@@ -212,6 +232,8 @@ export interface IPaymentEditView extends ibas.IBOEditView {
     addPaymentItemEvent: Function;
     /** 删除付款-项目事件 */
     removePaymentItemEvent: Function;
+    /** 选择付款客户事件 */
+    choosePaymentPartnerEvent: Function;
     /** 显示数据 */
     showPaymentItems(datas: bo.PaymentItem[]): void;
 }
