@@ -65,10 +65,6 @@ public class PaymentItems extends BusinessObjects<IPaymentItem, IPayment> implem
         if (this.getParent().getBusinessPartnerCode()!=null&&item.getBusinessPartnerCode()==null){
             item.setBusinessPartnerCode(this.getParent().getBusinessPartnerCode());
         }
-        if (this.getParent().getBusinessPartnerName()!=null&&item.getBusinessPartnerName()==null){
-            item.setBusinessPartnerName(this.getParent().getBusinessPartnerName());
-        }
-        //item.setBusinessPartnerType(this.getParent().getBusinessPartnerType());
     }
 
     @Override
@@ -85,8 +81,6 @@ public class PaymentItems extends BusinessObjects<IPaymentItem, IPayment> implem
         if(evt.getPropertyName()==Payment.PROPERTY_BUSINESSPARTNERCODE.getName()){
             for(IPaymentItem item : this){
              item.setBusinessPartnerCode(this.getParent().getBusinessPartnerCode());
-             item.setBusinessPartnerName(this.getParent().getBusinessPartnerName());
-             //item.setBusinessPartnerType(this.getParent().getBusinessPartnerType());
             }
         }
     }

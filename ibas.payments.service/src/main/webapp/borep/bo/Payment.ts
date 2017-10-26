@@ -470,7 +470,6 @@ export class PaymentItems extends BusinessObjects<PaymentItem, Payment> implemen
     protected afterAdd(item: PaymentItem): void {
         super.afterAdd(item);
         item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERCODE_NAME, this.parent.businessPartnerCode);
-        item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERNAME_NAME, this.parent.businessPartnerName);
         item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERTYPE_NAME, this.parent.businessPartnerType);
     }
 
@@ -480,7 +479,6 @@ export class PaymentItems extends BusinessObjects<PaymentItem, Payment> implemen
         if (name === Payment.PROPERTY_BUSINESSPARTNERCODE_NAME) {
             for (let item of this) {
                 item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERCODE_NAME, this.parent.businessPartnerCode);
-                item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERNAME_NAME, this.parent.businessPartnerName);
                 item.setProperty(PaymentItem.PROPERTY_BUSINESSPARTNERTYPE_NAME, this.parent.businessPartnerType);
             }
         }
@@ -524,17 +522,6 @@ export class PaymentItem extends BODocumentLine<PaymentItem> implements IPayment
     /** 设置-业务伙伴代码 */
     set businessPartnerCode(value: string) {
         this.setProperty(Payment.PROPERTY_BUSINESSPARTNERCODE_NAME, value);
-    }
-
-    /** 映射的属性名称-业务伙伴名称 */
-    static PROPERTY_BUSINESSPARTNERNAME_NAME: string = "BusinessPartnerName";
-    /** 获取-业务伙伴名称 */
-    get businessPartnerName(): string {
-        return this.getProperty<string>(Payment.PROPERTY_BUSINESSPARTNERNAME_NAME);
-    }
-    /** 设置-业务伙伴名称 */
-    set businessPartnerName(value: string) {
-        this.setProperty(Payment.PROPERTY_BUSINESSPARTNERNAME_NAME, value);
     }
 
     /** 映射的属性名称-业务伙伴类型 */

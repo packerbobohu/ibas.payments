@@ -129,24 +129,6 @@ export class PaymentEditView extends ibas.BOEditView implements IPaymentEditView
             visibleRowCount: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             columns: [
-                // new sap.ui.table.Column("", {
-                //     label: ibas.i18n.prop("bo_paymentitem_businesspartnercode"),
-                //     template: new sap.m.Input("", {
-                //         width: "100%",
-                //         type: sap.m.InputType.Text
-                //     }).bindProperty("value", {
-                //         path: "businessPartnerCode"
-                //     })
-                // }),
-                // new sap.ui.table.Column("", {
-                //     label: ibas.i18n.prop("bo_paymentitem_businesspartnername"),
-                //     template: new sap.m.Input("", {
-                //         width: "100%",
-                //         type: sap.m.InputType.Text
-                //     }).bindProperty("value", {
-                //         path: "businessPartnerName"
-                //     })
-                // }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_paymentitem_linestatus"),
                     template: new sap.m.Select("", {

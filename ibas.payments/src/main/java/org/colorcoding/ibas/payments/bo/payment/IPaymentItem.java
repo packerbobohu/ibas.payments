@@ -577,19 +577,4 @@ public interface IPaymentItem extends IBODocumentLine {
      */
     void setBusinessPartnerCode(String value);
 
-    /**
-     * 获取-业务伙伴名称
-     *
-     * @return 值
-     */
-    String getBusinessPartnerName();
-
-    /**
-     * 设置-业务伙伴名称
-     *
-     * @param value
-     *            值
-     */
-    void setBusinessPartnerName(String value);
-
 }

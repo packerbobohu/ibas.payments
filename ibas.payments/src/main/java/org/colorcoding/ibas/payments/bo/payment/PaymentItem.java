@@ -1232,37 +1232,6 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
         this.setProperty(PROPERTY_BUSINESSPARTNERCODE, value);
     }
 
-    /**
-     * 属性名称-业务伙伴名称
-     */
-    private static final String PROPERTY_BUSINESSPARTNERNAME_NAME = "BusinessPartnerName";
-
-    /**
-     * 业务伙伴名称 属性
-     */
-    @DbField(name = "CardName", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-    public static final IPropertyInfo<String> PROPERTY_BUSINESSPARTNERNAME = registerProperty(
-            PROPERTY_BUSINESSPARTNERNAME_NAME, String.class, MY_CLASS);
-
-    /**
-     * 获取-业务伙伴名称
-     *
-     * @return 值
-     */
-    @XmlElement(name = PROPERTY_BUSINESSPARTNERNAME_NAME)
-    public final String getBusinessPartnerName() {
-        return this.getProperty(PROPERTY_BUSINESSPARTNERNAME);
-    }
-
-    /**
-     * 设置-业务伙伴名称
-     *
-     * @param value
-     *            值
-     */
-    public final void setBusinessPartnerName(String value) {
-        this.setProperty(PROPERTY_BUSINESSPARTNERNAME, value);
-    }
 
 	/**
 	 * 初始化数据
@@ -1286,7 +1255,7 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 						    return PaymentItem.this.getIdentifiers();
 					}
 
-
+					@Override
 					public emBusinessPartnerType getBusinessPartnerType() {
 						    return PaymentItem.this.getBusinessPartnerType();
 					}
@@ -1294,11 +1263,6 @@ public class PaymentItem extends BusinessObject<PaymentItem> implements IPayment
 					@Override
 					public String getBusinessPartnerCode(){
 							return PaymentItem.this.getBusinessPartnerCode();
-					}
-
-					@Override
-					public String getBusinessPartnerName() {
-							return PaymentItem.this.getBusinessPartnerName();
 					}
 
 					@Override
